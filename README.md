@@ -21,6 +21,17 @@ API, we got the signature to sign each AJAX request.
 The signed key and time are *always* needed or it will explicitly return back that
 your not authenticated.
 
+Example
+----
+
+To get a list of notifications
+
+    var socl = new SoclAPI();
+    socl.login();
+    socl.getNotifications(function(data) {
+      console.log(data);
+    });
+
 Contributions welcomed!
 ----
 
