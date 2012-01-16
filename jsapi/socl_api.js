@@ -19,6 +19,7 @@ SoclAPI.NOTIFICATION_SERVICE = 'http://www.so.cl/Fusion/OpenV4/Notifications?las
 SoclAPI.NOTIFICATION_CHECK_SERVICE = 'http://www.so.cl/Fusion/OpenV4/$batch';
 SoclAPI.NOTIFICATION_SEEN_SERVICE = 'http://www.so.cl/Fusion/OpenV4/Notifications(\'seen\')';
 SoclAPI.GLOBAL_COUNTERS_SERVICE = 'http://www.so.cl/Fusion/GlobalCountersV1/$batch';
+SoclAPI.SEARCH_SERVICE = 'http://www.so.cl/Fusion/OpenV4/streamsearch'; //('9397')
 
 /**
  * We we require the signing key so we can sign every AJAX Request.
@@ -201,5 +202,39 @@ SoclAPI.prototype.markNotificationsRead = function() {
   this.requestService({
     type: 'PUT',
     url: SoclAPI.NOTIFICATION_SEEN_SERVICE
+  });
+};
+
+/**
+ * Get the individual post data.
+ */
+SoclAPI.prototype.getPost = function(payload) {
+  if (!payload.user_id) {
+    payload.callback({
+      statusCode: 400,
+      status: 'Error',
+      error: 'user_id was not supplied'
+    });
+    return;
+  }
+  if (!payload.post_id) {
+    payload.callback({
+      statusCode: 400,
+      status: 'Error',
+      error: 'post_id was not supplied'
+    });
+    return;
+  }
+  var url = SoclAPI.SEARCH_SERVICE + '(' + payload.user_id + ')?$filter:open.Post.id=\'' + payload.post_id + '\'' +
+      '&$orderby:-open.Post.createdtime&$type:open.Post&$top:10&$top:10&scope:all';
+  this.requestService({
+    url: url,
+    type: 'GET',
+    callback: function(data) {
+      var data = data[0];
+      if (data) {
+        callback(data.items);
+      }
+    }.bind(this)
   });
 };
