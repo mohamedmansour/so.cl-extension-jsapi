@@ -39,6 +39,7 @@ SoclAPI.prototype.login = function() {
 
 /**
  * Checks if the string ends with the specified pattern.
+ * 
  * @param {string} input The data to check.
  * @param {pattern} pattern The pattern to match.
  */
@@ -49,6 +50,7 @@ SoclAPI.prototype.endsWith = function(input, pattern) {
 
 /**
  * Checks if the input is null or has any whitespace.
+ * 
  * @param {string} input The data to check.
  */
 SoclAPI.prototype.isNullOrWhiteSpace = function(input) {
@@ -58,6 +60,7 @@ SoclAPI.prototype.isNullOrWhiteSpace = function(input) {
 
 /**
  * Use HMAC-SHA256 to sign the give data
+ * 
  * @param {string} data Data for signing.
  * @param {string} key Secret signing key
  */
@@ -67,6 +70,7 @@ SoclAPI.prototype.SignHMACSHA256 = function(data, key) {
 
 /**
  * Use HMAC-SHA256 to sign the give data and return in a BASE64 encoded string
+ * 
  * @param {string} data Data for signing.
  * @param {string} key Secret signing key
  */
@@ -76,6 +80,7 @@ SoclAPI.prototype.Base64SignHMACSHA256 = function(data, key) {
 
 /**
  * Install the preauth filter so we can sign every single ajax request.
+ * 
  * @param {object} option AJAX Request option.
  */
 SoclAPI.prototype.preAuthFilter = function(options) {
@@ -108,6 +113,7 @@ SoclAPI.prototype.isAuthenticated = function() {
 
 /**
  * Requests the service and parses it so the user can handle it.
+ * 
  * @param {object} payload An object that contains
  */
 SoclAPI.prototype.requestService = function(payload) {
@@ -166,6 +172,8 @@ SoclAPI.prototype.requestService = function(payload) {
 
 /**
  * Checks socl if any new notifications are available.
+ *
+ * @param {function(object)} callback Fired when any result appears.
  */
 SoclAPI.prototype.checkNotifications = function(callback) {
   this.requestService({
@@ -182,6 +190,8 @@ SoclAPI.prototype.checkNotifications = function(callback) {
 
 /**
  * Checks socl if any new notifications are available.
+ *
+ * @param {function(object)} callback Fired when any result appears.
  */
 SoclAPI.prototype.getNotifications = function(callback) {
   this.requestService({
@@ -207,10 +217,13 @@ SoclAPI.prototype.markNotificationsRead = function() {
 
 /**
  * Get the individual post data.
+ * 
+ * @param {object} payload The data to search for the post.
+ * @param {function(object)} callback Fired when any result appears.
  */
-SoclAPI.prototype.getPost = function(payload) {
+SoclAPI.prototype.getPost = function(payload, callback) {
   if (!payload.user_id) {
-    payload.callback({
+    callback({
       statusCode: 400,
       status: 'Error',
       error: 'user_id was not supplied'
@@ -218,7 +231,7 @@ SoclAPI.prototype.getPost = function(payload) {
     return;
   }
   if (!payload.post_id) {
-    payload.callback({
+    callback({
       statusCode: 400,
       status: 'Error',
       error: 'post_id was not supplied'
