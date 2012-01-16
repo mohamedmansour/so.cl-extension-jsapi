@@ -239,7 +239,7 @@ SoclAPI.prototype.getPost = function(payload, callback) {
     return;
   }
   var url = SoclAPI.SEARCH_SERVICE + '(' + payload.user_id + ')?$filter:open.Post.id=\'' + payload.post_id + '\'' +
-      '&$orderby:-open.Post.createdtime&$type:open.Post&$top:10&$top:10&scope:all';
+      '&$orderby:-open.Post.createdtime&$type:open.Post&$top:1&scope:all';
   this.requestService({
     url: url,
     type: 'GET',
