@@ -194,7 +194,10 @@ SoclAPI.prototype.getNotifications = function(callback) {
   });
 };
 
-SoclAPI.prototype.markNotificationsVisited = function() {
+/**
+ * Tells so.cl that the notifications were read.
+ */
+SoclAPI.prototype.markNotificationsRead = function() {
   this.requestService({
     type: 'PUT',
     url: SoclAPI.NOTIFICATION_SEEN_SERVICE
